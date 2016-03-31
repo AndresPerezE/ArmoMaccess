@@ -403,7 +403,7 @@ public class frameClient extends javax.swing.JFrame {
      */
     private void updateView() {
         if ((this.getDataFile().getResultSet() == null)
-                || (this.countCity() <= 0)){
+                || (this.countClient() <= 0)){
             this.newView();
         }
         else {
@@ -440,8 +440,7 @@ public class frameClient extends javax.swing.JFrame {
              client.setNIT(this.getDataFile().getResultSet().getInt("NIT"));
              client.setNameClient(this.getDataFile().getResultSet().getString("nameClient"));
              client.setPhone(this.getDataFile().getResultSet().getInt("phone"));
-             client.setAdrress(this.getDataFile().getResultSet().getString("address"));
-             
+             client.setAdrress(this.getDataFile().getResultSet().getString("address"));             
             this.object2View(client);
         } catch (SQLException ex) {
             Logger.getLogger(frameClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -458,20 +457,20 @@ public class frameClient extends javax.swing.JFrame {
         textNIT.setText(""+ client.getNIT());
         textName.setText(client.getNameClient());
         textPhone.setText("" + client.getPhone());
-        textAddress.setText(""+ client.getAdrress());
+        textAddress.setText(client.getAdrress());
         }
     
     /**
      * Select employees from DB
      */
     private void selectClient() {
-         String query = "SELECT * FROM City";
+         String query = "SELECT * FROM Client";
         if (this.getDataFile().execute(query)) {
             try {
                 this.getDataFile().getResultSet().next();
                 this.updateView();
             } catch (SQLException ex) {
-                Logger.getLogger(frameCity.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(frameClient.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -479,16 +478,16 @@ public class frameClient extends javax.swing.JFrame {
     /**
      * Select employees from DB
      */
-    private int countCity() {
+    private int countClient() {
         int count = 0;
         ResultSet backup = this.getDataFile().getResultSet();
-        String query = "SELECT count(*) FROM City";
+        String query = "SELECT count(*) FROM Client";
         if (this.getDataFile().execute(query)) {
             try {
                 this.getDataFile().getResultSet().next();
                 count = this.getDataFile().getResultSet().getInt(1);
             } catch (SQLException ex) {
-                Logger.getLogger(frameUser.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(frameClient.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         this.getDataFile().setResultSet(backup);
@@ -507,7 +506,7 @@ public class frameClient extends javax.swing.JFrame {
                 + client.getNIT() + ", '"
                 + client.getNameClient()+ "', "
                 + client.getPhone()+ ", '"
-                + client.getAdrress() + ")";
+                + client.getAdrress() + "')";
                 
         if (this.getDataFile().execute(query)) {
             this.selectClient();
@@ -522,11 +521,11 @@ public class frameClient extends javax.swing.JFrame {
     private void updateClient() {
         Client client = this.view2Object();
 
-        String query = "UPDATE User SET "
-                + "nameClient = '" + client.getNameClient()+ ", "
-                + "phone = '" + client.getPhone()+ "', "
+        String query = "UPDATE Client SET "
+                + "nameClient = '" + client.getNameClient()+ "', "
+                + "phone = '" + client.getPhone()+ ", "
                 + "address = '" +  client.getAdrress()+ "',"
-                + "WHERE NIT =" + client.getNIT()+", ";
+                + "WHERE NIT = '" + client.getNIT()+", ";
        
            if (this.getDataFile().execute(query)) {
             this.selectClient();
