@@ -499,7 +499,7 @@ public class frameClient extends javax.swing.JFrame {
      */
     private void insertClient() {
         Client client = this.view2Object();
-      
+        
         String query = "INSERT INTO Client "
                 + "(NIT, nameClient, phone, address) "
                 + "VALUES ("
